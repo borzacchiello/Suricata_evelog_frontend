@@ -31,16 +31,29 @@ tr:nth-child(even){background-color: #f2f2f2}
     </tr>
 """
 
+def button(page):
+    button = """
+    </table>
+    <div style='float:left'>
+    <form action = "" method = "get">
+        <button name="page" value=\"""" + str(page-1 if page > 0 else 0) + """\" type="submit"> prev page </button>
+    </form></div>
+    <div>
+    <form action = "" method = "get">
+        <button name="page" value=\"""" + str(page+1) + """\" type="submit"> next page </button>
+    </form></div>
+    """
+    return button
+
 html_tail = """
-</table>
 </body></html>
 """
 
-def build_html(rows):
+def build_html(rows, page=0):
     body = ""
     for row in rows:
         timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
         body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+dest_ip         + \
                 "</td><td>"+src_port+"</td><td>"+dest_port+"</td><td>"+protocol+"</td><td>"+interface + \
                 "</td><td>"+message+"</td><td>"+category+"</td><td>"+"</td><td>"+severity+"</td></tr>\n"
-    return html_head + body + html_tail
+    return html_head + body + button(page) + html_tail
