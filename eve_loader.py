@@ -20,6 +20,17 @@ def try_json(json_dict, field, cast_to=lambda x: x):
         ris = ""
     return ris
 
+def compute_order(order):
+    if order == "timestamp_d":
+        return "tmst DESC"
+    elif order == "timestamp_a":
+        return "tmst"
+    elif order == "severity_a":
+        return "severity"
+    elif order == "severity_d":
+        return "severity DESC"
+    raise Exception("compute_order: wrong parameter")
+
 class EveLoader(object):
     def __init__(self, filepath):
         self.eve_file = open(filepath, "r")
@@ -91,10 +102,11 @@ class EveLoader(object):
         if lines:
             self.conn.commit()
 
-    def get_n_lines(self, n, page=0):
+    def get_n_lines(self, n, page=0, order="timestamp_d"):
         c = self.conn.cursor()
+        o = compute_order(order)
         rows = []
-        for row in c.execute("SELECT * FROM alert WHERE type <> 'empty' ORDER BY tmst DESC LIMIT %s OFFSET %s" % (n, n*page)):
+        for row in c.execute("SELECT * FROM alert WHERE type <> 'empty' ORDER BY %s LIMIT %s OFFSET %s" % (o, n, n*page)):
             rows.append(map(lambda x: str(x), row[1:]))
         return rows
 

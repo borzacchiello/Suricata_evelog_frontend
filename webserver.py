@@ -1,7 +1,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from urlparse   import urlparse, parse_qs
 from build_html import build_html
 from eve_loader import EveLoader
-import SocketServer
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -12,15 +12,20 @@ class S(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
 
-        # page input parsing and sanitizing
-        i = self.path.find("page=")
+        # input parsing and sanitizing
+        query_components = parse_qs(urlparse(self.path).query)
         try:
-            page = int(self.path[i+5:]) if i != -1 else 0
+            page = int(query_components["page"][0])
         except:
             page = 0
+        try:
+            order = query_components["order"][0]
+            assert ( order in ("timestamp_d", "timestamp_a", "severity_a", "severity_d") )
+        except:
+            order = "timestamp_d"
 
         eve.reload()
-        html = build_html(eve.get_n_lines(100, page), page)
+        html = build_html(eve.get_n_lines(100, page, order), page, order)
         self.wfile.write(html)
 
     def do_HEAD(self):
@@ -31,13 +36,19 @@ class S(BaseHTTPRequestHandler):
         self._set_headers()
         # content_length = int(self.headers['Content-Length'])
         # post_data = self.rfile.read(content_length)
-        self.wfile.write("<html><body><h1>POST!</h1></body></html>")
-        
+        self.wfile.write("<html><body></body></html>")
+
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print 'Starting httpd...'
-    httpd.serve_forever()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print "\nStopping httpd..."
+        eve.quit()
 
 if __name__ == "__main__":
     from sys import argv, exit
@@ -51,5 +62,4 @@ if __name__ == "__main__":
 
     global eve
     eve = EveLoader(argv[1])
-
     run(port=port)
