@@ -1,6 +1,5 @@
 html_head = """
 <html><head>
-<link rel="icon" href="/favicon.ico">
 <style>
 table {
     border-collapse: collapse;
