@@ -124,7 +124,7 @@ class EveLoader(object):
             timestamp = try_json(d, "timestamp")
             src_ip    = try_json(d, "src_ip")
             dest_ip   = try_json(d, "dest_ip")
-            proto     = try_json(d, "proto")
+            proto     = try_json(d, "proto").upper()
             in_iface  = try_json(d, "in_iface")
             message   = try_json(try_json(d, "alert"), "signature")
             category  = try_json(try_json(d, "alert"), "category" )
