@@ -2,6 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from urlparse   import urlparse, parse_qs
 from build_html import build_html
 from eve_loader import EveLoader
+from filter import Filter
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -23,9 +24,26 @@ class S(BaseHTTPRequestHandler):
             assert ( order in ("timestamp_d", "timestamp_a", "severity_a", "severity_d") )
         except:
             order = "timestamp_d"
+        f = Filter()
+        try:
+            f.set_source(query_components["filter_src"][0])
+        except:
+            f.set_source()
+        try:
+            f.set_destination(query_components["filter_dst"][0])
+        except:
+            f.set_destination()
+        try:
+            f.set_interface(query_components["filter_interface"][0])
+        except:
+            f.set_interface()
+        try:
+            f.set_protocol(query_components["filter_protocol"][0])
+        except:
+            f.set_protocol()
 
-        eve.reload()
-        html = build_html(eve.get_n_lines(100, page, order), page, order)
+        eve.reload() # check if the logfile has been updated
+        html = build_html(eve.get_n_lines(100, page, order, f), page, order, f)
         self.wfile.write(html)
 
     def do_HEAD(self):
@@ -34,9 +52,7 @@ class S(BaseHTTPRequestHandler):
     def do_POST(self):
         # Doesn't do anything with posted data
         self._set_headers()
-        # content_length = int(self.headers['Content-Length'])
-        # post_data = self.rfile.read(content_length)
-        self.wfile.write("<html><body></body></html>")
+        self.wfile.write("")
 
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
