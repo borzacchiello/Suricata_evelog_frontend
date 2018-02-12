@@ -74,6 +74,7 @@ def compute_head(order, filter=default_filter):
             <td><b>Interface</b></td>
             <td><b>Message</b></td>
             <td><b>Category</b></td>
+            <td><b>Sid<b></td>
             <td>
                 <div style='float:left'><b>Severity &nbsp;</b></div>
                     <div style='float:left'>
@@ -130,8 +131,8 @@ html_tail = """
 def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     body = ""
     for row in rows:
-        timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
+        sid, timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
         body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port         + \
                 "</td><td>"+dest_ip+"</td><td>"+dest_port+"</td><td>"+protocol+"</td><td>"+interface + \
-                "</td><td>"+message+"</td><td>"+category+"</td><td>"+"</td><td>"+severity+"</td></tr>\n"
+                "</td><td>"+message+"</td><td>"+category+"</td><td>"+sid+"</td><td>"+severity+"</td></tr>\n"
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail

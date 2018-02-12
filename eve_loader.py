@@ -63,7 +63,8 @@ class EveLoader(object):
         c.execute( 'DROP TABLE IF EXISTS alert' )
         c.execute('''
             CREATE TABLE alert
-                ( id        integer, 
+                ( id        integer,
+                  sid       integer,
                   tmst    timestamp,
                   type         text, 
                   src_ip       text, 
@@ -78,7 +79,7 @@ class EveLoader(object):
                   PRIMARY KEY (id) )
                   ''')
         for i in range(self.max_db_index):
-            c.execute("INSERT INTO alert VALUES ('%s', '0000-00-00', 'empty', '', '', '', '', '', '', '', '', '')" % i)
+            c.execute("INSERT INTO alert VALUES ('%s', '', '0000-00-00', 'empty', '', '', '', '', '', '', '', '', '')" % i)
         self.conn.commit()
 
     def _init_file_read(self):
@@ -121,6 +122,7 @@ class EveLoader(object):
                 sys.stderr.write("WARNING: json malformed line: %s\n" % line)
                 continue
             ttype     = try_json(d, "event_type")
+            sid       = try_json(try_json(d, "alert"), "signature_id" )
             timestamp = try_json(d, "timestamp")
             src_ip    = try_json(d, "src_ip")
             dest_ip   = try_json(d, "dest_ip")
@@ -134,10 +136,10 @@ class EveLoader(object):
 
             timestamp_formatted = timestamp[:19].replace("T", " ") if timestamp != "" else ""
             c.execute(""" UPDATE alert
-                          SET tmst='%s', type='%s', src_ip='%s', dest_ip='%s', src_port='%s', dest_port='%s', 
+                          SET sid= %s, tmst='%s', type='%s', src_ip='%s', dest_ip='%s', src_port='%s', dest_port='%s', 
                               prot='%s', in_iface='%s', message='%s', category='%s', severity='%s'
                           WHERE id='%s';
-                      """ % ( timestamp_formatted, ttype, src_ip, dest_ip, src_port, dest_port,
+                      """ % ( sid, timestamp_formatted, ttype, src_ip, dest_ip, src_port, dest_port,
                               proto, in_iface, message, category, severity, str(self.curr_db_index)))
             self.curr_db_index = (self.curr_db_index + 1) % self.max_db_index
         if lines:
