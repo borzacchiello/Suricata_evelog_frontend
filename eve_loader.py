@@ -138,8 +138,6 @@ class EveLoader(object):
             payload   = try_json(d, "payload")
             packet    = try_json(d, "packet")
 
-            if payload != "": print "DEBUG", payload, self.curr_db_index
-
             timestamp_formatted = timestamp[:19].replace("T", " ") if timestamp != "" else ""
 
             c.execute(""" UPDATE alert
