@@ -146,3 +146,7 @@ def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
                 "</td><td>"+message+"</td><td>"+category+"</td><td>"+sid+"</td><td>"+severity + \
                 "</td><td>"+packet_download_builder(idd)+"</td></tr>\n"
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail
+
+def build_table_packet(payload, packet):
+    return "<table border=\"1\"><tr><td><b>payload<b></td><td><b>packet<b></td></tr><tr><td>" + \
+                (payload if payload else "_empty_")+"</td><td>"+(packet if packet else "_empty_")+"</td></tr></table>"

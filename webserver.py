@@ -1,6 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from urlparse   import urlparse, parse_qs
-from build_html import build_html
+from build_html import build_html, build_table_packet
 from eve_loader import EveLoader
 from filter import Filter
 
@@ -58,9 +58,8 @@ class S(BaseHTTPRequestHandler):
             i = post_data.find("id=")
             idd = int(post_data[i+3:])
             assert ( idd>=0 and idd<=eve.max_db_index )
-            content = eve.get_payload_id(idd)
-            if not content:
-                content = "empty payload"
+            payload, packet = eve.get_packet_by_id(idd)
+            content = build_table_packet(payload, packet)
             self.wfile.write("<html><body> " + content + " </body></html>")
         except:
             self.wfile.write("<html><body> id error </body></html>")

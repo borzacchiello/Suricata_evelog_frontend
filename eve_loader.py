@@ -77,10 +77,11 @@ class EveLoader(object):
                   category     text,
                   severity  integer,
                   payload      text,
+                  packet       text,
                   PRIMARY KEY (id) )
                   ''')
         for i in range(self.max_db_index):
-            c.execute("INSERT INTO alert VALUES ('%s', '', '0000-00-00', 'empty', '', '', '', '', '', '', '', '', '', '')" % i)
+            c.execute("INSERT INTO alert VALUES ('%s', '', '0000-00-00', 'empty', '', '', '', '', '', '', '', '', '', '', '')" % i)
         self.conn.commit()
 
     def _init_file_read(self):
@@ -135,6 +136,7 @@ class EveLoader(object):
             src_port  = try_json(d, "src_port",  cast_to=int)
             dest_port = try_json(d, "dest_port", cast_to=int)
             payload   = try_json(d, "payload")
+            packet    = try_json(d, "packet")
 
             if payload != "": print "DEBUG", payload, self.curr_db_index
 
@@ -142,10 +144,10 @@ class EveLoader(object):
 
             c.execute(""" UPDATE alert
                           SET sid= %s, tmst='%s', type='%s', src_ip='%s', dest_ip='%s', src_port='%s', dest_port='%s', 
-                              prot='%s', in_iface='%s', message='%s', category='%s', severity='%s', payload='%s' 
+                              prot='%s', in_iface='%s', message='%s', category='%s', severity='%s', payload='%s', packet='%s' 
                           WHERE id='%s';
                       """ % ( sid, timestamp_formatted, ttype, src_ip, dest_ip, src_port, dest_port,
-                              proto, in_iface, message, category, severity, payload, str(self.curr_db_index)))
+                              proto, in_iface, message, category, severity, payload, packet, str(self.curr_db_index)))
             self.curr_db_index = (self.curr_db_index + 1) % self.max_db_index
         if lines:
             self.conn.commit()
@@ -156,16 +158,16 @@ class EveLoader(object):
         f = compute_filter(filter)
         rows = []
         for row in c.execute("SELECT * FROM alert WHERE %s ORDER BY %s LIMIT %s OFFSET %s" % (f, o, n, n*page)):
-            rows.append(map( str , row[:len(row)-1]))
+            rows.append(map( str , row[:len(row)-2]))
         return rows
 
-    def get_payload_id(self, idd):
+    def get_packet_by_id(self, idd):
         c = self.conn.cursor()
         rows = []
-        for row in c.execute("SELECT payload FROM alert WHERE id=%s" % idd):
+        for row in c.execute("SELECT payload, packet FROM alert WHERE id=%s" % idd):
             rows.append(row)
-        assert ( len(rows) == 1 and len(rows[0]) == 1 )
-        return rows[0][0]
+        assert ( len(rows) == 1 and len(rows[0]) == 2 )
+        return rows[0][0], rows[0][1]
 
     def quit(self):
         self.eve_file.close()
