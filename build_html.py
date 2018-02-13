@@ -96,6 +96,7 @@ def compute_head(order, filter=default_filter):
                       name="order" value="severity_d" type="submit">D</button>
                     </form></div>
             </td>
+            <td><b>Download Packet<b></td>
         </tr>
     """
     return html_head
@@ -128,11 +129,20 @@ html_tail = """
 </body></html>
 """
 
+def packet_download_builder(id):
+    download_packet_button = """
+    <form action = "" method = "post">
+        <button name="id" value=\"""" + str(id) + """\" type="submit">download</button>
+    </form>
+    """
+    return download_packet_button
+
 def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     body = ""
     for row in rows:
-        sid, timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
+        idd, sid, timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
         body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port         + \
                 "</td><td>"+dest_ip+"</td><td>"+dest_port+"</td><td>"+protocol+"</td><td>"+interface + \
-                "</td><td>"+message+"</td><td>"+category+"</td><td>"+sid+"</td><td>"+severity+"</td></tr>\n"
+                "</td><td>"+message+"</td><td>"+category+"</td><td>"+sid+"</td><td>"+severity + \
+                "</td><td>"+packet_download_builder(idd)+"</td></tr>\n"
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail

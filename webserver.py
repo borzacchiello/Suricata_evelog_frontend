@@ -50,9 +50,18 @@ class S(BaseHTTPRequestHandler):
         self._set_headers()
         
     def do_POST(self):
-        # Doesn't do anything with posted data
         self._set_headers()
-        self.wfile.write("")
+        # Doesn't do anything with posted data
+        content_length = int(self.headers['Content-Length']) 
+        post_data      = self.rfile.read(content_length)
+        try:
+            i = post_data.find("id=")
+            idd = int(post_data[i+3:])
+            assert ( idd>=0 and idd<=eve.max_db_index )
+            content = eve.get_payload_id(idd)
+            self.wfile.write("<html><body> " + content + " </body></html>")
+        except:
+            self.wfile.write("<html><body> id error </body></html>")
 
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
