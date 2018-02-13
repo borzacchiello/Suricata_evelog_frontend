@@ -34,8 +34,8 @@ def compute_head(order, filter=default_filter):
         <input type="text" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
         <label for="filter_protocol">Filter protocol:</label>
         <input type="text" name="filter_protocol" value=\"""" + filter.protocol + """\">
-        <label for="filter_interface">Filter interface:</label>
-        <input type="text" name="filter_interface" value=\"""" + filter.interface + """\">
+        <label for="filter_sid">Filter sid:</label>
+        <input type="text" name="filter_sid" value=\"""" + str(filter.sid) + """\">
       </div>
       <div>
         <input type="submit" value="Send">
@@ -52,7 +52,7 @@ def compute_head(order, filter=default_filter):
                     <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
                     <input type="hidden" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
                     <input type="hidden" name="filter_protocol" value=\"""" + filter.protocol + """\">
-                    <input type="hidden" name="filter_interface" value=\"""" + filter.interface + """\">
+                    <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
                     <button style=\" """ + ("background-color: #4CAF50" if order == "timestamp_a" else "") + """ \"
                      name="order" value="timestamp_a" type="submit">A</button>
                 </form></div>
@@ -61,7 +61,7 @@ def compute_head(order, filter=default_filter):
                     <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
                     <input type="hidden" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
                     <input type="hidden" name="filter_protocol" value=\"""" + filter.protocol + """\">
-                    <input type="hidden" name="filter_interface" value=\"""" + filter.interface + """\">
+                    <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
                     <button style=\" """ + ("background-color: #4CAF50" if order == "timestamp_d" else "") + """ \"
                       name="order" value="timestamp_d" type="submit">D</button>
                 </form></div>
@@ -82,7 +82,7 @@ def compute_head(order, filter=default_filter):
                         <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
                         <input type="hidden" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
                         <input type="hidden" name="filter_protocol" value=\"""" + filter.protocol + """\">
-                        <input type="hidden" name="filter_interface" value=\"""" + filter.interface + """\">
+                        <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
                         <button style=\" """ + ("background-color: #4CAF50" if order == "severity_a" else "") + """ \"
                       name="order" value="severity_a" type="submit">A</button>
                     </form></div>
@@ -91,7 +91,7 @@ def compute_head(order, filter=default_filter):
                         <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
                         <input type="hidden" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
                         <input type="hidden" name="filter_protocol" value=\"""" + filter.protocol + """\">
-                        <input type="hidden" name="filter_interface" value=\"""" + filter.interface + """\">
+                        <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
                         <button style=\" """ + ("background-color: #4CAF50" if order == "severity_d" else "") + """ \"
                       name="order" value="severity_d" type="submit">D</button>
                     </form></div>
@@ -110,7 +110,7 @@ def page_buttons(page, order, filter):
         <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
         <input type="hidden" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
         <input type="hidden" name="filter_protocol" value=\"""" + filter.protocol + """\">
-        <input type="hidden" name="filter_interface" value=\"""" + filter.interface + """\">
+        <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
         <button name="page" value=\"""" + str(page-1 if page > 0 else 0) + """\" type="submit"> prev page </button>
     </form></div>
     <div>
@@ -119,7 +119,7 @@ def page_buttons(page, order, filter):
         <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
         <input type="hidden" name="filter_dst" value=\"""" + filter.destination_ip + ":" + filter.destination_port + """\">
         <input type="hidden" name="filter_protocol" value=\"""" + filter.protocol + """\">
-        <input type="hidden" name="filter_interface" value=\"""" + filter.interface + """\">
+        <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
         <button name="page" value=\"""" + str(page+1) + """\" type="submit"> next page </button>
     </form></div>
     """

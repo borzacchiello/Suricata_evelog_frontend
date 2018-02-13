@@ -26,6 +26,7 @@ class Filter(object):
         self.destination_port = "*"
         self.interface   = "*"
         self.protocol    = "*"
+        self.sid         = "*"
 
     def set_source(self, src=None):
         if src is None:
@@ -78,6 +79,14 @@ class Filter(object):
             self.protocol = protocol.upper()
         else:
             raise
+
+    def set_sid(self, sid=None):
+        if sid is None:
+            self.sid = "*"
+            return
+        sid = int(sid)
+        assert ( sid >= 0 )
+        self.sid = sid
 
     def __str__(self):
         ris = "s_ip=%s, s_port=%s, d_ip=%s, d_port%s, interface=%s, protocol=%s" %           \

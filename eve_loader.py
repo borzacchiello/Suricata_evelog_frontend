@@ -52,6 +52,8 @@ def compute_filter(filter):
         where_clause += "AND in_iface='%s' " % filter.interface
     if filter.protocol != "*":
         where_clause += "AND prot='%s' " % filter.protocol
+    if filter.sid != "*":
+        where_clause += "AND sid='%s' " % filter.sid
     return where_clause
 
 default_filter = Filter()

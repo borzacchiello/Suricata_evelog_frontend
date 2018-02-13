@@ -34,9 +34,9 @@ class S(BaseHTTPRequestHandler):
         except:
             f.set_destination()
         try:
-            f.set_interface(query_components["filter_interface"][0])
+            f.set_sid(query_components["filter_sid"][0])
         except:
-            f.set_interface()
+            f.set_sid()
         try:
             f.set_protocol(query_components["filter_protocol"][0])
         except:
