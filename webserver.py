@@ -59,6 +59,8 @@ class S(BaseHTTPRequestHandler):
             idd = int(post_data[i+3:])
             assert ( idd>=0 and idd<=eve.max_db_index )
             content = eve.get_payload_id(idd)
+            if not content:
+                content = "empty payload"
             self.wfile.write("<html><body> " + content + " </body></html>")
         except:
             self.wfile.write("<html><body> id error </body></html>")
