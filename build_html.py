@@ -11,6 +11,11 @@ def compute_head(order, filter=default_filter):
         width: 100%;
     }
 
+    .column-message {
+        text-wrap: normal;
+        word-wrap: break-word;
+    }
+
     th, td {
         text-align: left;
         padding: 8px;
@@ -72,7 +77,7 @@ def compute_head(order, filter=default_filter):
             <td><b>Dest Port</b></td>
             <td><b>Protocol</b></td>
             <td><b>Interface</b></td>
-            <td><b>Message</b></td>
+            <td class="column-message"><b>Message</b></td>
             <td><b>Category</b></td>
             <td><b>Sid<b></td>
             <td>
@@ -141,10 +146,10 @@ def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     body = ""
     for row in rows:
         idd, sid, timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
-        body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port         + \
+        body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port       + \
                 "</td><td>"+dest_ip+"</td><td>"+dest_port+"</td><td>"+protocol+"</td><td>"+interface + \
-                "</td><td>"+message+"</td><td>"+category+"</td><td>"+sid+"</td><td>"+severity + \
-                "</td><td>"+packet_download_builder(idd)+"</td></tr>\n"
+                "</td><td class=\"column-message\">"+message+"</td><td>"+category+"</td><td>"+sid    + \
+                "</td><td>"+severity + "</td><td>"+packet_download_builder(idd)+"</td></tr>\n"
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail
 
 def build_table_packet(payload, packet):
