@@ -151,7 +151,7 @@ def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     body = ""
     for row in rows:
         idd, sid, timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
-        body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port       + \
+        body += "<tr><td>"+ttype+"</td><td class=\"no-wrap\">"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port       + \
                 "</td><td>"+dest_ip+"</td><td>"+dest_port+"</td><td>"+protocol+"</td><td>"+interface + \
                 "</td><td class=\"column-message\">"+message+"</td><td>"+category+"</td><td>"+sid    + \
                 "</td><td>"+severity + "</td><td>"+packet_download_builder(idd)+"</td></tr>\n"
