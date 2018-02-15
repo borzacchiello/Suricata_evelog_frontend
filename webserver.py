@@ -3,6 +3,8 @@ from urlparse   import urlparse, parse_qs
 from build_html import build_html, build_table_packet
 from eve_loader import EveLoader
 from filter import Filter
+import signal
+import sys
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -64,20 +66,22 @@ class S(BaseHTTPRequestHandler):
         except:
             self.wfile.write("<html><body> id error </body></html>")
 
+def signal_handler(signal, frame):
+    print "\nStopping httpd..."
+    eve.quit()
+    sys.exit(0)
+
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print 'Starting httpd...'
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        print "\nStopping httpd..."
-        eve.quit()
+    httpd.serve_forever()
 
 if __name__ == "__main__":
     from sys import argv, exit
+
+    signal.signal(signal.SIGINT,  signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
 
     try:
         assert ( len(argv) in (2, 3) )
