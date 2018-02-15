@@ -158,6 +158,6 @@ def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail
 
 def build_table_packet(payload, packet):
-    return "<table border=\"1\"><tr><td style='white-space: nowrap;'><b>payload<b></td></tr><tr><td style='white-space: nowrap;'>" + \
+    return "<table border=\"1\"><tr><td style='text-wrap: normal; word-wrap: break-word; word-break: break-all;'><b>payload<b></td></tr><tr><td style='white-space: nowrap;'>" + \
                 (payload if payload else "_empty_")+"</td></tr><tr><td style='white-space: nowrap;'>"                          + \
-                "<b>packet<b></td></tr><tr><td style='white-space: nowrap;'>" + (packet if packet else "_empty_")+"</td></tr></table>"
+                "<b>packet<b></td></tr><tr><td style='text-wrap: normal; word-wrap: break-word; word-break: break-all;'>" + (packet if packet else "_empty_")+"</td></tr></table>"
