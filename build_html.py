@@ -12,8 +12,13 @@ def compute_head(order, filter=default_filter):
     }
 
     .column-message {
-        text-wrap: normal;
-        word-wrap: break-word;
+        text-wrap:  normal;
+        word-wrap:  break-word;
+        word-break: break-all;
+    }
+
+    .no-wrap {
+        white-space: nowrap;
     }
 
     th, td {
@@ -50,7 +55,7 @@ def compute_head(order, filter=default_filter):
     <table class="alerts-table">
         <tr>
             <td><b>Type</b></td>
-            <td>
+            <td class="no-wrap">
                 <div style='float:left'><b>Timestamp &nbsp;</b></div>
                 <div style='float:left'>
                 <form action = "" method = "get">
@@ -80,7 +85,7 @@ def compute_head(order, filter=default_filter):
             <td class="column-message"><b>Message</b></td>
             <td><b>Category</b></td>
             <td><b>Sid<b></td>
-            <td>
+            <td class="no-wrap">
                 <div style='float:left'><b>Severity &nbsp;</b></div>
                     <div style='float:left'>
                     <form action = "" method = "get">
