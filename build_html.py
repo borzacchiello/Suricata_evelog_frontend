@@ -55,8 +55,9 @@ def compute_head(order, filter=default_filter):
     <table class="alerts-table">
         <tr>
             <td><b>Type</b></td>
-            <td class="no-wrap">
+            <td>
                 <div style='float:left'><b>Timestamp &nbsp;</b></div>
+                <div class="no-wrap">
                 <div style='float:left'>
                 <form action = "" method = "get">
                     <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
@@ -74,7 +75,7 @@ def compute_head(order, filter=default_filter):
                     <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
                     <button style=\" """ + ("background-color: #4CAF50" if order == "timestamp_d" else "") + """ \"
                       name="order" value="timestamp_d" type="submit">D</button>
-                </form></div>
+                </form></div></div>
             </td>
             <td><b>Src Ip</b></td>
             <td><b>Src Port</b></td>
@@ -87,6 +88,7 @@ def compute_head(order, filter=default_filter):
             <td><b>Sid<b></td>
             <td class="no-wrap">
                 <div style='float:left'><b>Severity &nbsp;</b></div>
+                    <div class="no-wrap">
                     <div style='float:left'>
                     <form action = "" method = "get">
                         <input type="hidden" name="filter_src" value=\"""" + filter.source_ip + ":" + filter.source_port + """\">
@@ -104,7 +106,7 @@ def compute_head(order, filter=default_filter):
                         <input type="hidden" name="filter_sid" value=\"""" + str(filter.sid) + """\">
                         <button style=\" """ + ("background-color: #4CAF50" if order == "severity_d" else "") + """ \"
                       name="order" value="severity_d" type="submit">D</button>
-                    </form></div>
+                    </form></div></div>
             </td>
             <td><b>Download Packet<b></td>
         </tr>
@@ -151,13 +153,14 @@ def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     body = ""
     for row in rows:
         idd, sid, timestamp, ttype, src_ip, dest_ip, src_port, dest_port, protocol, interface, message, category, severity = row
-        body += "<tr><td>"+ttype+"</td><td class=\"no-wrap\">"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port       + \
+        body += "<tr><td>"+ttype+"</td><td>"+timestamp+"</td><td>"+src_ip+"</td><td>"+src_port       + \
                 "</td><td>"+dest_ip+"</td><td>"+dest_port+"</td><td>"+protocol+"</td><td>"+interface + \
                 "</td><td class=\"column-message\">"+message+"</td><td>"+category+"</td><td>"+sid    + \
                 "</td><td>"+severity + "</td><td>"+packet_download_builder(idd)+"</td></tr>\n"
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail
 
 def build_table_packet(payload, packet):
-    return "<table border=\"1\"><tr><td style='text-wrap: normal; word-wrap: break-word; word-break: break-all;'><b>payload<b></td></tr><tr><td style='white-space: nowrap;'>" + \
-                (payload if payload else "_empty_")+"</td></tr><tr><td style='white-space: nowrap;'>"                          + \
-                "<b>packet<b></td></tr><tr><td style='text-wrap: normal; word-wrap: break-word; word-break: break-all;'>" + (packet if packet else "_empty_")+"</td></tr></table>"
+    return "<table style='border-collapse: collapse; width: 100%;' border=\"1\"><tr><td style='text-wrap: normal; word-wrap: break-word; word-break:" + \
+                " break-all;'><b>payload<b></td></tr><tr><td style='white-space: nowrap;'>" + (payload if payload else "_empty_")+"</td></tr><tr><td" + \
+                " style='white-space: nowrap;'><b>packet<b></td></tr><tr><td style='text-wrap: normal; word-wrap: break-word; word-break: break-all;'>" + \
+                (packet if packet else "_empty_")+"</td></tr></table>"
