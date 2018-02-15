@@ -82,7 +82,7 @@ def compute_head(order, filter=default_filter):
             <td><b>Dest Port</b></td>
             <td><b>Protocol</b></td>
             <td><b>Interface</b></td>
-            <td class="column-message"><b>Message</b></td>
+            <td class="no-wrap"><b>Message</b></td>
             <td><b>Category</b></td>
             <td><b>Sid<b></td>
             <td class="no-wrap">
@@ -158,6 +158,6 @@ def build_html(rows, page=0, order="timestamp_d", filter=default_filter):
     return compute_head(order, filter) + body + page_buttons(page, order, filter) + html_tail
 
 def build_table_packet(payload, packet):
-    return "<table border=\"1\"><tr><td class=\"column-message\"><b>payload<b></td></tr><tr><td class=\"column-message\">" + \
-                (payload if payload else "_empty_")+"</td></tr><tr><td class=\"column-message\">"                          + \
-                "<b>packet<b></td></tr><tr><td  class=\"column-message\">" + (packet if packet else "_empty_")+"</td></tr></table>"
+    return "<table border=\"1\"><tr><td style='white-space: nowrap;'><b>payload<b></td></tr><tr><td style='white-space: nowrap;'>" + \
+                (payload if payload else "_empty_")+"</td></tr><tr><td style='white-space: nowrap;'>"                          + \
+                "<b>packet<b></td></tr><tr><td style='white-space: nowrap;'>" + (packet if packet else "_empty_")+"</td></tr></table>"
